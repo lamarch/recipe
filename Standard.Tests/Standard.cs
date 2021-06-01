@@ -1,7 +1,7 @@
 using System;
 using Xunit;
 
-namespace Standard.Tests
+namespace Recipe.Standard.Tests
 {
     using Standard;
 
@@ -10,8 +10,6 @@ namespace Standard.Tests
         [Fact]
         public void IsPrime_Prime()
         {
-            var math = new MyMaths();
-            math.IsPrime(2);
         }
     }
 }
