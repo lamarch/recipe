@@ -4,7 +4,7 @@ namespace Recipe.Standard
     {
 
         IItem<TValue> Item { get; init; }
-
         IRecipe<TValue> Recipe { get; init; }
+        TValue PickValue();
     }
 }

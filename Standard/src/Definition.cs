@@ -1,10 +1,17 @@
+
 namespace Recipe.Standard
 {
+    using System.Collections.Generic;
     public record Definition<TValue> : IDefinition<TValue>
     {
-        public IItem<TValue> Reference { get; init; }
-        public IMatches<TValue> Matches { get; init; }
+        public IItemRef<TValue> Reference { get; init; }
+        public IReadOnlyCollection<IMatch<TValue>> Matches { get; init; }
         public IRecipe<TValue> Recipe { get; init; }
+
+        public void AddMatch(IItem<TValue> item, double frequency)
+        {
+
+        }
 
     }
 }
