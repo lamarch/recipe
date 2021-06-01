@@ -4,5 +4,7 @@ namespace Recipe.Standard
     {
         public IItem<TValue> Item { get; init; }
         public double Frequency { get; init; }
+        public IMatches<TValue> Matches { get; init; }
+
     }
 }

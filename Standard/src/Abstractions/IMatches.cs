@@ -5,5 +5,6 @@ namespace Recipe.Standard
     public interface IMatches<TValue>
     {
         IReadOnlyCollection<IMatche<TValue>> MatcheList { get; init; }
+        IDefinition<TValue> Definition { get; init; }
     }
 }

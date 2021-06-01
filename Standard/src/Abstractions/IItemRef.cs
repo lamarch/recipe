@@ -1,8 +1,10 @@
 namespace Recipe.Standard
 {
-    public interface IItem<TValue>
+    public interface IItemRef<TValue>
     {
-        TValue Value { get; init; }
+
+        IItem<TValue> Item { get; init; }
+
         IRecipe<TValue> Recipe { get; init; }
     }
 }
