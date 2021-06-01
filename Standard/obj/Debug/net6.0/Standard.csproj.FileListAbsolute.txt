@@ -1,0 +1,12 @@
+c:\Users\Xavier\mes_fichiers\prog\C#\Recipes\Standard\bin\Debug\net6.0\Standard.deps.json
+c:\Users\Xavier\mes_fichiers\prog\C#\Recipes\Standard\bin\Debug\net6.0\Standard.dll
+c:\Users\Xavier\mes_fichiers\prog\C#\Recipes\Standard\bin\Debug\net6.0\ref\Standard.dll
+c:\Users\Xavier\mes_fichiers\prog\C#\Recipes\Standard\bin\Debug\net6.0\Standard.pdb
+c:\Users\Xavier\mes_fichiers\prog\C#\Recipes\Standard\obj\Debug\net6.0\Standard.csproj.AssemblyReference.cache
+c:\Users\Xavier\mes_fichiers\prog\C#\Recipes\Standard\obj\Debug\net6.0\Standard.GeneratedMSBuildEditorConfig.editorconfig
+c:\Users\Xavier\mes_fichiers\prog\C#\Recipes\Standard\obj\Debug\net6.0\Standard.AssemblyInfoInputs.cache
+c:\Users\Xavier\mes_fichiers\prog\C#\Recipes\Standard\obj\Debug\net6.0\Standard.AssemblyInfo.cs
+c:\Users\Xavier\mes_fichiers\prog\C#\Recipes\Standard\obj\Debug\net6.0\Standard.csproj.CoreCompileInputs.cache
+c:\Users\Xavier\mes_fichiers\prog\C#\Recipes\Standard\obj\Debug\net6.0\Standard.dll
+c:\Users\Xavier\mes_fichiers\prog\C#\Recipes\Standard\obj\Debug\net6.0\ref\Standard.dll
+c:\Users\Xavier\mes_fichiers\prog\C#\Recipes\Standard\obj\Debug\net6.0\Standard.pdb
