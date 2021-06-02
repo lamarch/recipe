@@ -60,7 +60,7 @@ namespace Recipe.Standard
             var rndIndex = m_random.NextLong(0, TotalCount);
 
             long browseIndex = 0;
-            IMatch<TValue> pickedMatch = null;
+            IMatch<TValue> pickedMatch = null!;
 
             foreach (var match in Matches)
             {
@@ -73,7 +73,7 @@ namespace Recipe.Standard
                 }
             }
 
-            return pickedMatch;
+            return pickedMatch!;
         }
     }
 }
