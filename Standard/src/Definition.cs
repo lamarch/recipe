@@ -5,38 +5,49 @@ namespace Recipe.Standard
 
     public record Definition<TValue> : IDefinition<TValue>
     {
-        Dictionary<long, IMatch<TValue>> m_matches = new();
+        List<IPosition<TValue>> m_positions = new();
 
         public Definition(IRecipe<TValue> recipe, IItemRef<TValue> reference)
         {
             Recipe = recipe;
-            Reference = reference;
+            ItemRef = reference;
         }
 
         public IRecipe<TValue> Recipe { get; init; }
-        public IItemRef<TValue> Reference { get; init; }
+        public IItemRef<TValue> ItemRef { get; init; }
 
-        public IReadOnlyDictionary<long, IMatch<TValue>> Matches
+        public IReadOnlyCollection<IPosition<TValue>> Positions
         {
-            get { return m_matches; }
-            init { m_matches = value.ToDictionary(kvp => kvp.Key, kvp => kvp.Value); }
+            get { return m_positions; }
+            init { m_positions = value.ToList(); }
         }
 
-        public void AddMatch(IItem<TValue> item, long relativePosition, long count)
-        {
 
-            // Item already exists
-            if (m_matches.TryGetValue(relativePosition, out IMatch<TValue> _match))
+        public IPosition<TValue> GetPosition(long relativePosition)
+        {
+            try
             {
-                m_matches[relativePosition] = new Match<TValue>(this, _match.ItemRef, _match.Count + count);
+                return Positions.First(position => position.RelativePosition == relativePosition);
             }
-            // Add item reference
-            else
+            catch
             {
-                var match = new Match<TValue>(this, Recipe.AddItem(item), count);
-                m_matches[relativePosition] = match;
+                IPosition<TValue> position = new Position<TValue>(this, relativePosition);
+                m_positions.Add(position);
+                return position;
             }
         }
 
+        public void AddMatch(IItemRef<TValue> item, long relativePosition, long count)
+        {
+            var position = GetPosition(relativePosition);
+
+            position.AddMatch(item, count);
+        }
+
+        public IMatch<TValue> PickRandomMatch(long relativePosition)
+        {
+            var position = GetPosition(relativePosition);
+            return position.PickRandomMatch();
+        }
     }
 }

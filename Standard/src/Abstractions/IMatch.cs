@@ -4,6 +4,8 @@ namespace Recipe.Standard
     {
         IItemRef<TValue> ItemRef { get; init; }
         long Count { get; init; }
-        IDefinition<TValue> Definition { get; init; }
+        IPosition<TValue> Position { get; init; }
+
+        void AddCount(long count);
     }
 }

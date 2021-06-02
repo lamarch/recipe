@@ -1,3 +1,5 @@
+using System;
+using System.Linq.Expressions;
 namespace Recipe.Standard
 {
     using System.Collections.Generic;
@@ -10,9 +12,10 @@ namespace Recipe.Standard
 
         public Recipe()
         {
-
+            Random = new Random();
         }
 
+        public Random Random { get; init; }
         public IReadOnlyCollection<IItem<TValue>> Items
         {
             get { return m_items; }
@@ -24,7 +27,7 @@ namespace Recipe.Standard
             init { m_definitions = value.ToList(); }
         }
 
-        public IItemRef<TValue> AddItem(IItem<TValue> item)
+        public IItemRef<TValue> GetItemRef(IItem<TValue> item)
         {
             // Item already exists ?
             if (!m_items.Contains(item))
@@ -33,14 +36,29 @@ namespace Recipe.Standard
             return new ItemRef<TValue>(this, item);
         }
 
-        public void CreateDefinition(IItem<TValue> item, IEnumerable<(IItem<TValue> item, long relativePosition, long count)> matches)
+        public IDefinition<TValue> GetDefinition(IItem<TValue> item)
+        {
+            var itemRef = GetItemRef(item);
+            try
+            {
+                return m_definitions.First(definition => definition.ItemRef == itemRef);
+            }
+            catch
+            {
+                var definition = new Definition<TValue>(this, itemRef);
+                m_definitions.Add(definition);
+                return definition;
+            }
+        }
+
+        public void AddMatches(IItem<TValue> item, IEnumerable<(IItem<TValue> item, long relativePosition, long count)> matches)
         {
 
-            var definition = new Definition<TValue>(this, this.AddItem(item));
+            var definition = GetDefinition(item);
 
             foreach (var match in matches)
             {
-                definition.AddMatch(match.item, match.relativePosition, match.count);
+                definition.AddMatch(GetItemRef(match.item), match.relativePosition, match.count);
             }
 
             m_definitions.Add(definition);

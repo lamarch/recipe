@@ -1,17 +1,28 @@
 namespace Recipe.Standard
 {
+    using Recipe.Standard.Extensions;
     public record Match<TValue> : IMatch<TValue>
     {
-        public Match(IDefinition<TValue> definition, IItemRef<TValue> item, long count)
+        long m_count;
+
+        public Match(IPosition<TValue> position, IItemRef<TValue> item, long count)
         {
-            Definition = definition;
+            Position = position;
             ItemRef = item;
             Count = count;
         }
 
-        public IDefinition<TValue> Definition { get; init; }
+        public IPosition<TValue> Position { get; init; }
         public IItemRef<TValue> ItemRef { get; init; }
-        public long Count { get; init; }
+        public long Count
+        {
+            get { return m_count; }
+            init { m_count = value; }
+        }
 
+        public void AddCount(long count)
+        {
+            m_count.BoundAdd(count);
+        }
     }
 }
