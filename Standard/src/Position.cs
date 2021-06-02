@@ -52,7 +52,7 @@ namespace Recipe.Standard
         {
             var match = GetMatch(item);
             match.AddCount(count);
-            m_totalCount.BoundAdd(count);
+            m_totalCount += count;
         }
 
         public IMatch<TValue> PickRandomMatch()
@@ -64,13 +64,13 @@ namespace Recipe.Standard
 
             foreach (var match in Matches)
             {
-                browseIndex += match.Count;
 
                 if (browseIndex < rndIndex)
                 {
                     pickedMatch = match;
                     break;
                 }
+                browseIndex += match.Count;
             }
 
             return pickedMatch!;

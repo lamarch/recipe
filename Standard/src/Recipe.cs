@@ -41,7 +41,7 @@ namespace Recipe.Standard
             var itemRef = GetItemRef(item);
             try
             {
-                return m_definitions.First(definition => definition.ItemRef == itemRef);
+                return m_definitions.First(definition => definition.ItemRef.Item == itemRef.Item);
             }
             catch
             {

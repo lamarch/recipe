@@ -22,7 +22,7 @@ namespace Recipe.Standard
 
         public void AddCount(long count)
         {
-            m_count.BoundAdd(count);
+            m_count += count;
         }
     }
 }
