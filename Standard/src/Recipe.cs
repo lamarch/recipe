@@ -1,5 +1,3 @@
-
-using System.Text.RegularExpressions;
 namespace Recipe.Standard
 {
     using System.Collections.Generic;
@@ -26,9 +24,19 @@ namespace Recipe.Standard
             init { m_definitions = value.ToList(); }
         }
 
-        public void CreateDefinition(IItem<TValue> item, IEnumerable<(Item<TValue> item, long relativePosition, long count)> matches)
+        public IItemRef<TValue> AddItem(IItem<TValue> item)
         {
-            var definition = new Definition<TValue>(this, new ItemRef<TValue>(this, item));
+            // Item already exists ?
+            if (!m_items.Contains(item))
+                m_items.Add(item);
+
+            return new ItemRef<TValue>(this, item);
+        }
+
+        public void CreateDefinition(IItem<TValue> item, IEnumerable<(IItem<TValue> item, long relativePosition, long count)> matches)
+        {
+
+            var definition = new Definition<TValue>(this, this.AddItem(item));
 
             foreach (var match in matches)
             {

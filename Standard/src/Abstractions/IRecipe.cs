@@ -7,6 +7,7 @@ namespace Recipe.Standard
         IReadOnlyCollection<IItem<TValue>> Items { get; init; }
         IReadOnlyCollection<IDefinition<TValue>> Definitions { get; init; }
 
-        void CreateDefinition(IItem<TValue> item, IEnumerable<(Item<TValue> item, long relativePosition, long count)> matches);
+        IItemRef<TValue> AddItem(IItem<TValue> item);
+        void CreateDefinition(IItem<TValue> item, IEnumerable<(IItem<TValue> item, long relativePosition, long count)> matches);
     }
 }

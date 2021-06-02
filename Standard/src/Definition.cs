@@ -1,5 +1,3 @@
-
-using System.Text.RegularExpressions;
 namespace Recipe.Standard
 {
     using System.Collections.Generic;
@@ -27,13 +25,15 @@ namespace Recipe.Standard
         public void AddMatch(IItem<TValue> item, long relativePosition, long count)
         {
 
+            // Item already exists
             if (m_matches.TryGetValue(relativePosition, out IMatch<TValue> _match))
             {
                 m_matches[relativePosition] = new Match<TValue>(this, _match.ItemRef, _match.Count + count);
             }
+            // Add item reference
             else
             {
-                var match = new Match<TValue>(this, new ItemRef<TValue>(Recipe, item), count);
+                var match = new Match<TValue>(this, Recipe.AddItem(item), count);
                 m_matches[relativePosition] = match;
             }
         }
