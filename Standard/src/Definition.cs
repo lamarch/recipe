@@ -7,7 +7,8 @@ namespace Recipe.Standard
 
     public record Definition<TValue> : IDefinition<TValue>
     {
-        List<IMatch<TValue>> m_matches = new();
+        Dictionary<long, IMatch<TValue>> m_matches = new();
+
         public Definition(IRecipe<TValue> recipe, IItemRef<TValue> reference)
         {
             Recipe = recipe;
@@ -16,16 +17,25 @@ namespace Recipe.Standard
 
         public IRecipe<TValue> Recipe { get; init; }
         public IItemRef<TValue> Reference { get; init; }
-        public IReadOnlyCollection<IMatch<TValue>> Matches
+
+        public IReadOnlyDictionary<long, IMatch<TValue>> Matches
         {
             get { return m_matches; }
-            init { m_matches = value.ToList(); }
+            init { m_matches = value.ToDictionary(kvp => kvp.Key, kvp => kvp.Value); }
         }
 
-        public void AddMatch(IItem<TValue> item, double frequency)
+        public void AddMatch(IItem<TValue> item, long relativePosition, long count)
         {
-            var match = new Match<TValue>(this, new ItemRef<TValue>(Recipe, item), frequency);
-            m_matches.Add(match);
+
+            if (m_matches.TryGetValue(relativePosition, out IMatch<TValue> _match))
+            {
+                m_matches[relativePosition] = new Match<TValue>(this, _match.ItemRef, _match.Count + count);
+            }
+            else
+            {
+                var match = new Match<TValue>(this, new ItemRef<TValue>(Recipe, item), count);
+                m_matches[relativePosition] = match;
+            }
         }
 
     }

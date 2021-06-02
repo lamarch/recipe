@@ -26,13 +26,15 @@ namespace Recipe.Standard
             init { m_definitions = value.ToList(); }
         }
 
-        public void CreateDefinition(IItem<TValue> item, IEnumerable<(Item<TValue> item, double frequency)> matches)
+        public void CreateDefinition(IItem<TValue> item, IEnumerable<(Item<TValue> item, long relativePosition, long count)> matches)
         {
             var definition = new Definition<TValue>(this, new ItemRef<TValue>(this, item));
+
             foreach (var match in matches)
             {
-                definition.AddMatch(match.item, match.frequency);
+                definition.AddMatch(match.item, match.relativePosition, match.count);
             }
+
             m_definitions.Add(definition);
         }
 

@@ -2,8 +2,8 @@ namespace Recipe.Standard
 {
     public interface IMatch<TValue>
     {
-        IItemRef<TValue> Item { get; init; }
-        double Frequency { get; init; }
+        IItemRef<TValue> ItemRef { get; init; }
+        long Count { get; init; }
         IDefinition<TValue> Definition { get; init; }
     }
 }

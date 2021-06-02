@@ -6,9 +6,9 @@ namespace Recipe.Standard
     public interface IDefinition<TValue>
     {
         IItemRef<TValue> Reference { get; init; }
-        IReadOnlyCollection<IMatch<TValue>> Matches { get; init; }
+        IReadOnlyDictionary<long, IMatch<TValue>> Matches { get; init; }
         IRecipe<TValue> Recipe { get; init; }
 
-        void AddMatch(IItem<TValue> item, double frequency);
+        void AddMatch(IItem<TValue> item, long relativePosition, long count);
     }
 }
