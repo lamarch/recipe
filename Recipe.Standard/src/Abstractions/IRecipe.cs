@@ -9,8 +9,11 @@ namespace Recipe.Standard
         IReadOnlyCollection<IItem<TValue>> Items { get; init; }
         IReadOnlyCollection<IDefinition<TValue>> Definitions { get; init; }
 
+        IItem<TValue> GetItem(TValue value);
         IItemRef<TValue> GetItemRef(IItem<TValue> item);
+        void AddMatch(IItem<TValue> item, (IItem<TValue> item, long relativePosition, long count) match);
         void AddMatches(IItem<TValue> item, IEnumerable<(IItem<TValue> item, long relativePosition, long count)> matches);
+
         IDefinition<TValue> GetDefinition(IItem<TValue> item);
     }
 }

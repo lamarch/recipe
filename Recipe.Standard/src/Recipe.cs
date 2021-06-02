@@ -5,7 +5,7 @@ namespace Recipe.Standard
     using System.Collections.Generic;
     using System.Linq;
 
-    public record Recipe<TValue> : IRecipe<TValue>
+    public record Recipe<TValue> : IRecipe<TValue> where TValue : IEquatable<TValue>
     {
         List<IItem<TValue>> m_items = new();
         List<IDefinition<TValue>> m_definitions = new();
@@ -25,6 +25,11 @@ namespace Recipe.Standard
         {
             get { return m_definitions; }
             init { m_definitions = value.ToList(); }
+        }
+
+        public IItem<TValue> GetItem(TValue value)
+        {
+            return new Item<TValue>(value, this);
         }
 
         public IItemRef<TValue> GetItemRef(IItem<TValue> item)
@@ -60,9 +65,12 @@ namespace Recipe.Standard
             {
                 definition.AddMatch(GetItemRef(match.item), match.relativePosition, match.count);
             }
-
-            m_definitions.Add(definition);
         }
 
+        public void AddMatch(IItem<TValue> item, (IItem<TValue> item, long relativePosition, long count) match)
+        {
+            var definition = GetDefinition(item);
+            definition.AddMatch(GetItemRef(match.item), match.relativePosition, match.count);
+        }
     }
 }
