@@ -63,56 +63,19 @@ namespace Recipe.Standard.Tests
             {
                 currChar = input[i];
 
-                // Is it the end of a word ?
-                if (splits.Contains(currChar))
+                // Add matches for precedent chars
+                for (var j = i - 1; j >= 0; j--)
                 {
-                    currChar = '\0';
+                    precChar = input[j];
+                    recipe.AddMatch(currChar, (precChar, j - i, 1));
                 }
 
-                // first letter
-                precChar = '\0';
-                if (i > 0)
+                // Add matches for next chars
+                for (var j = i + 1; j < input.Length; j++)
                 {
-                    // not first letter
-                    precChar = input[i - 1];
+                    nextChar = input[j];
+                    recipe.AddMatch(currChar, (nextChar, j - i, 1));
                 }
-
-                // Is it the end of a word ?
-                if (splits.Contains(precChar))
-                {
-                    precChar = '\0';
-                }
-
-                // last letter
-                nextChar = '\0';
-                if (i < input.Length - 1)
-                {
-                    // not last letter
-                    nextChar = input[i + 1];
-                }
-
-                if (splits.Contains(nextChar))
-                {
-                    nextChar = '\0';
-                }
-
-                // Precedent char matches
-                recipe.AddMatches(precChar, new List<(char item, long relativePosition, long count)>(){
-                    (currChar, +1, 1),
-                    (nextChar, +2, 1)
-                });
-
-                // Current char matches
-                recipe.AddMatches(currChar, new List<(char item, long relativePosition, long count)>(){
-                    (precChar, -1, 1),
-                    (nextChar, +1, 1)
-                });
-
-                // Next char matches
-                recipe.AddMatches(nextChar, new List<(char item, long relativePosition, long count)>(){
-                    (currChar, -1, 1),
-                    (precChar, -2, 1)
-                });
             }
 
             Print("");
