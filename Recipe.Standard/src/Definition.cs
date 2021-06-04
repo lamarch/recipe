@@ -1,20 +1,21 @@
 namespace Recipe.Standard
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
-    public record Definition<TValue> : IDefinition<TValue>
+    public record Definition<TValue> : IDefinition<TValue> where TValue : IEquatable<TValue>
     {
         List<IPosition<TValue>> m_positions = new();
 
-        public Definition(IRecipe<TValue> recipe, IItemRef<TValue> reference)
+        public Definition(IRecipe<TValue> recipe, TValue item)
         {
             Recipe = recipe;
-            ItemRef = reference;
+            Item = item;
         }
 
         public IRecipe<TValue> Recipe { get; init; }
-        public IItemRef<TValue> ItemRef { get; init; }
+        public TValue Item { get; init; }
 
         public IReadOnlyCollection<IPosition<TValue>> Positions
         {
@@ -37,7 +38,7 @@ namespace Recipe.Standard
             }
         }
 
-        public void AddMatch(IItemRef<TValue> item, long relativePosition, long count)
+        public void AddMatch(TValue item, long relativePosition, long count)
         {
             var position = GetPosition(relativePosition);
 

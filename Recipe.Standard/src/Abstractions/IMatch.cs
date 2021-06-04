@@ -1,8 +1,9 @@
+using System;
 namespace Recipe.Standard
 {
-    public interface IMatch<TValue>
+    public interface IMatch<TValue> where TValue : IEquatable<TValue>
     {
-        IItemRef<TValue> ItemRef { get; init; }
+        TValue Item { get; init; }
         long Count { get; init; }
         IPosition<TValue> Position { get; init; }
 

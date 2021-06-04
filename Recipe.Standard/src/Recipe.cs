@@ -7,7 +7,6 @@ namespace Recipe.Standard
 
     public record Recipe<TValue> : IRecipe<TValue> where TValue : IEquatable<TValue>
     {
-        List<IItem<TValue>> m_items = new();
         List<IDefinition<TValue>> m_definitions = new();
 
         public Recipe()
@@ -16,61 +15,41 @@ namespace Recipe.Standard
         }
 
         public Random Random { get; init; }
-        public IReadOnlyCollection<IItem<TValue>> Items
-        {
-            get { return m_items; }
-            init { m_items = value.ToList(); }
-        }
         public IReadOnlyCollection<IDefinition<TValue>> Definitions
         {
             get { return m_definitions; }
             init { m_definitions = value.ToList(); }
         }
 
-        public IItem<TValue> GetItem(TValue value)
-        {
-            return new Item<TValue>(value, this);
-        }
 
-        public IItemRef<TValue> GetItemRef(IItem<TValue> item)
+        public IDefinition<TValue> GetDefinition(TValue item)
         {
-            // Item already exists ?
-            if (!m_items.Contains(item))
-                m_items.Add(item);
-
-            return new ItemRef<TValue>(this, item);
-        }
-
-        public IDefinition<TValue> GetDefinition(IItem<TValue> item)
-        {
-            var itemRef = GetItemRef(item);
             try
             {
-                return m_definitions.First(definition => definition.ItemRef.Item == itemRef.Item);
+                return m_definitions.First(definition => definition.Item.Equals(item));
             }
             catch
             {
-                var definition = new Definition<TValue>(this, itemRef);
+                var definition = new Definition<TValue>(this, item);
                 m_definitions.Add(definition);
                 return definition;
             }
         }
 
-        public void AddMatches(IItem<TValue> item, IEnumerable<(IItem<TValue> item, long relativePosition, long count)> matches)
+        public void AddMatches(TValue item, IEnumerable<(TValue item, long relativePosition, long count)> matches)
         {
 
             var definition = GetDefinition(item);
 
             foreach (var match in matches)
             {
-                definition.AddMatch(GetItemRef(match.item), match.relativePosition, match.count);
+                definition.AddMatch(match.item, match.relativePosition, match.count);
             }
         }
-
-        public void AddMatch(IItem<TValue> item, (IItem<TValue> item, long relativePosition, long count) match)
+        public void AddMatch(TValue item, (TValue item, long relativePosition, long count) match)
         {
             var definition = GetDefinition(item);
-            definition.AddMatch(GetItemRef(match.item), match.relativePosition, match.count);
+            definition.AddMatch(match.item, match.relativePosition, match.count);
         }
     }
 }

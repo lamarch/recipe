@@ -7,7 +7,7 @@ namespace Recipe.Standard
 
     using Recipe.Standard.Extensions;
 
-    public class Position<TValue> : IPosition<TValue>
+    public class Position<TValue> : IPosition<TValue> where TValue : IEquatable<TValue>
     {
         readonly Random m_random;
 
@@ -34,21 +34,21 @@ namespace Recipe.Standard
             init { m_matches = value.ToList(); }
         }
 
-        public IMatch<TValue> GetMatch(IItemRef<TValue> itemRef)
+        public IMatch<TValue> GetMatch(TValue item)
         {
             try
             {
-                return Matches.First(match => match.ItemRef == itemRef);
+                return Matches.First(match => match.Item.Equals(item));
             }
             catch
             {
-                var match = new Match<TValue>(this, itemRef, 0);
+                var match = new Match<TValue>(this, item, 0);
                 m_matches.Add(match);
                 return match;
             }
         }
 
-        public void AddMatch(IItemRef<TValue> item, long count)
+        public void AddMatch(TValue item, long count)
         {
             var match = GetMatch(item);
             match.AddCount(count);

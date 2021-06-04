@@ -3,17 +3,14 @@ namespace Recipe.Standard
     using System;
     using System.Collections.Generic;
 
-    public interface IRecipe<TValue>
+    public interface IRecipe<TValue> where TValue : IEquatable<TValue>
     {
         Random Random { get; init; }
-        IReadOnlyCollection<IItem<TValue>> Items { get; init; }
         IReadOnlyCollection<IDefinition<TValue>> Definitions { get; init; }
 
-        IItem<TValue> GetItem(TValue value);
-        IItemRef<TValue> GetItemRef(IItem<TValue> item);
-        void AddMatch(IItem<TValue> item, (IItem<TValue> item, long relativePosition, long count) match);
-        void AddMatches(IItem<TValue> item, IEnumerable<(IItem<TValue> item, long relativePosition, long count)> matches);
+        void AddMatch(TValue item, (TValue item, long relativePosition, long count) match);
+        void AddMatches(TValue item, IEnumerable<(TValue item, long relativePosition, long count)> matches);
 
-        IDefinition<TValue> GetDefinition(IItem<TValue> item);
+        IDefinition<TValue> GetDefinition(TValue item);
     }
 }

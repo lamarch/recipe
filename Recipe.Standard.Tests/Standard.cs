@@ -25,16 +25,18 @@ namespace Recipe.Standard.Tests
         {
 
             Recipe<string> recipe = new();
-            var a = new Item<string>("a", recipe);
+            var a = "a";
 
             recipe.AddMatches(a,
-            new List<(IItem<string>, long, long)>()
+            new List<(string, long, long)>()
             {
                 (a, 1, 2)
             });
 
-            Assert.Equal("a", recipe.GetDefinition(a).PickRandomMatch(1).ItemRef.PickValue());
+            Assert.Equal("a", recipe.GetDefinition(a).PickRandomMatch(1).Item);
         }
+
+
 
         [Fact]
         public void Parsing()
@@ -95,39 +97,41 @@ namespace Recipe.Standard.Tests
                 }
 
                 // Precedent char matches
-                recipe.AddMatches(recipe.GetItem(precChar), new List<(IItem<char> item, long relativePosition, long count)>(){
-                    (recipe.GetItem(currChar), +1, 1),
-                    (recipe.GetItem(nextChar), +2, 1)
+                recipe.AddMatches(precChar, new List<(char item, long relativePosition, long count)>(){
+                    (currChar, +1, 1),
+                    (nextChar, +2, 1)
                 });
 
                 // Current char matches
-                recipe.AddMatches(recipe.GetItem(currChar), new List<(IItem<char> item, long relativePosition, long count)>(){
-                    (recipe.GetItem(precChar), -1, 1),
-                    (recipe.GetItem(nextChar), +1, 1)
+                recipe.AddMatches(currChar, new List<(char item, long relativePosition, long count)>(){
+                    (precChar, -1, 1),
+                    (nextChar, +1, 1)
                 });
 
                 // Next char matches
-                recipe.AddMatches(recipe.GetItem(nextChar), new List<(IItem<char> item, long relativePosition, long count)>(){
-                    (recipe.GetItem(currChar), -1, 1),
-                    (recipe.GetItem(precChar), -2, 1)
+                recipe.AddMatches(nextChar, new List<(char item, long relativePosition, long count)>(){
+                    (currChar, -1, 1),
+                    (precChar, -2, 1)
                 });
             }
 
+            Print("");
             Print("Recipe :");
             foreach (var definition in recipe.Definitions)
             {
-                Print("- Definition :");
-                Print($"  - Item value : {definition.ItemRef.PickValue()}");
-                Print($"  - Matches :");
+                Print($"- Definition of '{definition.Item}' :");
 
-                foreach (var pos_match in definition.Positions.Where(position => position.RelativePosition > 0)
-                                                              .SelectMany(
-                                                              position => position.Matches.Select(match => (position, match))
-                                                              ))
+                foreach (var position in definition.Positions)
                 {
-                    Print("    - Match :");
-                    Print($"      - Position = {pos_match.position.RelativePosition} , Value = {pos_match.match.ItemRef.PickValue()} , Count = {pos_match.match.Count}");
+                    Print($"    - Position at {position.RelativePosition}, total = {position.TotalCount} :");
+
+                    foreach (var match in position.Matches)
+                    {
+                        Print($"      - Match of '{match.Item}' {match.Count} times.");
+                    }
                 }
+
+
             }
         }
     }

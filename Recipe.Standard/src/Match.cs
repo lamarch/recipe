@@ -1,19 +1,19 @@
 namespace Recipe.Standard
 {
-    using Recipe.Standard.Extensions;
-    public record Match<TValue> : IMatch<TValue>
+    using System;
+    public record Match<TValue> : IMatch<TValue> where TValue : IEquatable<TValue>
     {
         long m_count;
 
-        public Match(IPosition<TValue> position, IItemRef<TValue> item, long count)
+        public Match(IPosition<TValue> position, TValue item, long count)
         {
             Position = position;
-            ItemRef = item;
+            Item = item;
             Count = count;
         }
 
         public IPosition<TValue> Position { get; init; }
-        public IItemRef<TValue> ItemRef { get; init; }
+        public TValue Item { get; init; }
         public long Count
         {
             get { return m_count; }
